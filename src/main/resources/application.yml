@@ -23,8 +23,8 @@ spring:
     ansi:
       enabled: ALWAYS
 
-logging:
-  level:
-    org:
-      hibernate:
-        type: trace
+#logging:
+#  level:
+#    org:
+#      hibernate:
+#        type: trace
