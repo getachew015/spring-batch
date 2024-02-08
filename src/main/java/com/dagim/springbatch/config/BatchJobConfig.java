@@ -55,7 +55,7 @@ public class BatchJobConfig {
     @Bean
     public Step slaveStep(){
         return stepBuilderFactory.get("csv-read-slave-step")
-                .<Customer,Customer>chunk(1000)
+                .<Customer,Customer>chunk(20000)
                 .reader(itemReader())
                 .processor(itemProcessor())
                 .writer(customerWriter)
@@ -71,9 +71,9 @@ public class BatchJobConfig {
     @Bean
     public TaskExecutor taskExecutor(){
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
-        taskExecutor.setMaxPoolSize(10);
-        taskExecutor.setCorePoolSize(10);
-        taskExecutor.setQueueCapacity(10);
+        taskExecutor.setMaxPoolSize(20);
+        taskExecutor.setCorePoolSize(20);
+        taskExecutor.setQueueCapacity(20);
         return taskExecutor;
     }
 
@@ -84,9 +84,10 @@ public class BatchJobConfig {
         return columnRangePartitioning;
     }
 
+    @Bean
     public PartitionHandler partitionHandler(){
         TaskExecutorPartitionHandler taskExecutorPartitionHandler = new TaskExecutorPartitionHandler();
-        taskExecutorPartitionHandler.setGridSize(100);
+        taskExecutorPartitionHandler.setGridSize(5);
         taskExecutorPartitionHandler.setTaskExecutor(taskExecutor());
         taskExecutorPartitionHandler.setStep(slaveStep());
         return taskExecutorPartitionHandler;
